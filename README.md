@@ -1,7 +1,7 @@
 
 Laravel: Auth con Breeze y Google
 
-Breve guía paso a paso para **implementar autenticación con Laravel Breeze (Blade)** y **login con Google (Socialite)**. Incluye los comandos esenciales, los archivos que debes modificar y el paso para mapear un dominio local en `hosts` (útil para el callback de Google). Manténlo lo más básico posible.
+Breve guía paso a paso para **implementar autenticación con Laravel Breeze (Blade)** y **login con Google (Socialite)**. Incluye los comandos esenciales, los archivos que debes modificar y el paso para mapear un dominio local en `hosts` (útil para el callback de Google).
 
 ---
 
