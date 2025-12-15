@@ -1,3 +1,456 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+:root {
+    --green: #00ff41;
+    --purple: #b026ff;
+    --dark: #000;
+    --glow-green: 0 0 8px var(--green);
+    --glow-purple: 0 0 8px var(--purple);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--dark);
+    color: var(--green);
+    font-family: 'Press Start 2P', monospace;
+    min-height: 100vh;
+  /*  display: flex;
+    justify-content: center;
+    align-items: center;*/
+    overflow-x: hidden;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+}
+
+.container {
+    max-width: 90vw;
+}
+
+.title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    text-shadow: var(--glow-green);
+    animation: flicker 3s infinite alternate;
+}
+
+.subtitle {
+    font-size: 0.75rem;
+    color: #aaa;
+    margin-bottom: 2rem;
+    line-height: 1.4;
+}
+
+/* Botones de autenticación (en welcome) */
+.auth-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 0.65rem;
+    text-decoration: none;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    transition: all 0.25s ease;
+    font-family: 'Press Start 2P', monospace;
+    cursor: pointer;
+}
+
+.btn-google {
+    color: white;
+    background: #333;
+    border-color: #555;
+}
+.btn-google:hover {
+    background: #444;
+    color: white;
+    transform: scale(1.05);
+}
+
+.btn-login {
+    color: var(--green);
+    text-shadow: var(--glow-green);
+    border-color: var(--green);
+}
+.btn-login:hover {
+    background: var(--green);
+    color: black;
+    transform: scale(1.05);
+}
+
+.btn-register {
+    color: var(--purple);
+    text-shadow: var(--glow-purple);
+    border-color: var(--purple);
+}
+.btn-register:hover {
+    background: var(--purple);
+    color: black;
+    transform: scale(1.05);
+}
+
+/* Botón Dashboard (cuando estás logueado) */
+.btn-dashboard {
+    color: var(--purple);
+    text-shadow: var(--glow-purple);
+    border-color: var(--purple);
+    padding: 0.5rem 1.2rem;
+    font-size: 0.7rem;
+}
+.btn-dashboard:hover {
+    background: var(--purple);
+    color: black;
+    transform: scale(1.05);
+}
+
+/* Efecto parpadeo sutil */
+@keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+    }
+    20%, 24%, 55% {
+        opacity: 0.8;
+    }
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.btn-green {
+    color: var(--green);
+    text-shadow: var(--glow-green);
+    border-color: var(--green);
+}
+.btn-green:hover {
+    background: var(--green);
+    color: black;
+    transform: scale(1.05);
+}
+
+.btn-purple {
+    color: var(--purple);
+    text-shadow: var(--glow-purple);
+    border-color: var(--purple);
+}
+.btn-purple:hover {
+    background: var(--purple);
+    color: black;
+    transform: scale(1.05);
+}
+
+.btn-red {
+    color: #ff4141;
+    text-shadow: 0 0 8px #ff4141;
+    border-color: #ff4141;
+}
+.btn-red:hover {
+    background: #ff4141;
+    color: black;
+    transform: scale(1.05);
+}
+.btn-blue {
+    color: #00aaff;
+    text-shadow: 0 0 8px #00aaff;
+    border-color: #00aaff;
+}
+.btn-blue:hover {
+    background: #00aaff;
+    color: black;
+    transform: scale(1.05);
+}
+/* === Login / Auth === */
+.auth-container {
+    text-align: center;
+    max-width: 90vw;
+    width: 400px;
+}
+
+.auth-title {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    text-shadow: var(--glow-green);
+    color: var(--green);
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+}
+
+.form-label {
+    font-size: 0.7rem;
+    color: var(--green);
+    text-shadow: var(--glow-green);
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.5rem;
+    background: #111;
+    border: 2px solid var(--green);
+    color: var(--green);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.6rem;
+    outline: none;
+}
+
+.form-input:focus {
+    border-color: var(--purple);
+    box-shadow: 0 0 8px var(--purple);
+}
+
+.form-error {
+    color: #ff4141;
+    font-size: 0.55rem;
+    text-align: left;
+}
+
+.remember {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.remember-label {
+    font-size: 0.6rem;
+    color: #aaa;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.remember input {
+    width: 12px;
+    height: 12px;
+    accent-color: var(--green);
+}
+
+.forgot-link {
+    font-size: 0.6rem;
+    color: var(--purple);
+    text-decoration: none;
+    text-shadow: var(--glow-purple);
+}
+
+.forgot-link:hover {
+    text-decoration: underline;
+}
+
+.auth-footer {
+    margin-top: 2rem;
+    font-size: 0.7rem;
+    color: #aaa;
+}
+
+.link {
+    color: var(--green);
+    text-decoration: none;
+    text-shadow: var(--glow-green);
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+/* === Profile Page === */
+.profile-container {
+    max-width: 90vw;
+    width: 500px;
+}
+
+.user-info {
+    margin-bottom: 2rem;
+}
+
+.profile-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+}
+
+.section {
+    margin-top: 3rem;
+    padding: 1.5rem;
+    border: 2px solid var(--green);
+    border-radius: 0;
+    background: #0a0a0a;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    color: var(--green);
+    text-shadow: var(--glow-green);
+    margin-bottom: 0.8rem;
+}
+
+.section-desc {
+    font-size: 0.7rem;
+    color: #aaa;
+    margin-bottom: 1.2rem;
+    line-height: 1.4;
+}
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+/* === Dashboard personalizado === */
+
+/* Barra superior derecha */
+.top-right-bar {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    gap: 0.8rem;
+    z-index: 10;
+}
+
+.top-right-bar .btn {
+    font-size: 0.7rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: 4px;
+}
+
+/* Panel de acciones en dashboard (vertical) */
+.left-actions {
+    position: absolute;
+    left: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    z-index: 5;
+}
+
+.left-actions .btn {
+    width: 180px;
+    padding: 0.8rem 1rem;
+    font-size: 0.7rem;
+    text-align: center;
+    white-space: normal;
+}
+/* Mensaje de bienvenida */
+.message {
+    color: #aaa;
+    font-size: 0.75rem;
+    margin: 1.5rem 0;
+    line-height: 1.4;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .profile-container {
+        width: 90vw;
+    }
+    .section {
+        padding: 1rem;
+    }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .title {
+        font-size: 1.2rem;
+    }
+    .subtitle {
+        font-size: 0.6rem;
+    }
+    .btn {
+        font-size: 0.55rem;
+        padding: 0.4rem 0.8rem;
+    }
+    /* === Responsive para pantallas pequeñas === */
+@media (max-width: 768px) {
+    /* Ajustar body para evitar overflow */
+    body {
+        padding: 1rem;
+        min-height: auto;
+    }
+
+    /* Centrar contenido principal */
+    .main-content {
+        margin: 2rem auto;
+    }
+
+    /* Barra superior derecha: moverla a la parte inferior en móvil */
+    .top-right-bar {
+        position: static;
+        top: auto;
+        right: auto;
+        display: flex;
+        justify-content: center;
+        gap: 0.8rem;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .top-right-bar .btn {
+        font-size: 0.65rem;
+        padding: 0.3rem 0.7rem;
+        width: auto;
+    }
+
+    /* Panel izquierdo: convertirlo en horizontal y centrado */
+    .left-actions {
+        position: static;
+        transform: none;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .left-actions .btn {
+        width: auto;
+        padding: 0.5rem 1rem;
+        font-size: 0.65rem;
+        text-align: center;
+    }
+
+    /* Ajustar tamaño del título */
+    .title {
+        font-size: 1.5rem;
+    }
+
+    .subtitle {
+        font-size: 0.65rem;
+    }
+
+    .message {
+        font-size: 0.7rem;
+    }
+}
+}
