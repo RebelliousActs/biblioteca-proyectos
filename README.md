@@ -1,59 +1,146 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Laravel: Auth con Breeze y Google
 
-## About Laravel
+Breve guía paso a paso para **implementar autenticación con Laravel Breeze (Blade)** y **login con Google (Socialite)**. Incluye los comandos esenciales, los archivos que debes modificar y el paso para mapear un dominio local en `hosts` (útil para el callback de Google). Manténlo lo más básico posible.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requisitos
+- **Software:** PHP, Composer, Node.js, npm.  
+- **Proyecto:** un proyecto Laravel existente o crear uno nuevo.  
+- **Cuenta Google Cloud** para crear credenciales OAuth (Client ID y Client Secret).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Comandos principales (paso a paso)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+1. **Crear proyecto Laravel (si aplica)**
+```bash
+composer create-project --prefer-dist laravel/laravel mi-proyecto
+cd mi-proyecto
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. **Instalar Breeze (Blade)**
+```bash
+composer require laravel/breeze --dev
+php artisan breeze:install
+npm install
+npm run dev
+php artisan migrate
+```
 
-## Laravel Sponsors
+3. **Instalar Socialite (Google)**
+```bash
+composer require laravel/socialite
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+4. **Configurar variables de entorno**
+Edita `.env` y añade las variables de Google (rellena con tus credenciales):
+```
+GOOGLE_CLIENT_ID=tu_client_id
+GOOGLE_CLIENT_SECRET=tu_client_secret
 
-### Premium Partners
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+5. **Mapear dominio local en hosts (para callback de Google)**
 
-## Contributing
+- **Objetivo:** que `mi-proyecto.com` resuelva a tu máquina local y coincida con la URL registrada en Google Cloud.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **Linux / macOS**
+  ```bash
+  sudo nano /etc/hosts
+  ```
+  Añade al final:
+  ```
+  127.0.0.1    mi-proyecto.com
+  ```
 
-## Code of Conduct
+- **Windows**
+  - Abre el Bloc de notas como Administrador y edita:
+    ```
+    C:\Windows\System32\drivers\etc\hosts
+    ```
+  - Añade:
+    ```
+    127.0.0.1    mi-proyecto.com
+    ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- **En Google Cloud Console** (APIs & Services → Credentials) registra el **Authorized redirect URI**:
+  ```
+  http://mi-proyecto.com/google-auth/callback
+  ```
 
-## Security Vulnerabilities
+- **En Laravel** asegúrate de que `.env` y `config/services.php` usan la misma URL de callback (ver sección siguiente).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+6. **Levantar servidor local con host personalizado**
+```bash
+php artisan serve --host mi-proyecto.com --port:80
+```
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Archivos a modificar (esenciales)
+
+### `config/services.php`
+Añade la configuración de Google:
+```php
+'google' => [
+    'client_id' => env('GOOGLE_CLIENT_ID'),
+    'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+    'redirect' =>'http://mi-proyecto.com/google-auth/callback',
+],
+```
+
+### `.env`
+Asegúrate de tener:
+```
+GOOGLE_CLIENT_ID=tu_client_id
+GOOGLE_CLIENT_SECRET=tu_client_secret
+
+```
+
+### `routes/web.php`
+Rutas mínimas para Google:
+
+```php
+
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Socialite;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+// Socialite Routes
+Route::get('/google-auth/redirect', function () {
+    return Socialite::driver('google')->redirect();
+});
+Route::get('/google-auth/callback', function () {
+    $user_google = Socialite::driver('google')->user();
+    $user = User::updateOrCreate(
+        [
+            'google_id' => $user_google->id,
+        ],
+        [
+            'name' => $user_google->name,
+            'email' => $user_google->email,
+        ]
+    );
+    Auth::login($user);
+    return redirect('/dashboard');
+    
+});
+```
+
+---
+
+## Pasos mínimos en Google Cloud (resumen)
+1. Entra a **Google Cloud Console → APIs & Services → Credentials**.  
+2. Crea un **OAuth 2.0 Client ID** (Application type: Web application).  
+3. En **Authorized redirect URIs** añade:
+```
+http://mi-proyecto.com/google-auth/callback
+```
+4. Copia **Client ID** y **Client Secret** a tu `.env`.
+
+---
+
+
